@@ -17,8 +17,8 @@
         <div class="sub header">{{ taxon.description }}</div>
     </h1>
     {{ form_start(form, {'method': 'GET', 'attr': {'class': 'ui loadable form'}}) }}
-    <div class="ui stackable grid">
-        <div class="four wide column">
+    <div class="row">
+        <div class="col-3">
             <div class="ui fluid vertical menu">
                 <div class="header item">
                     {{ 'bitbag_sylius_elasticsearch_plugin.ui.filter_results'|trans }}
@@ -26,14 +26,14 @@
                 {% include '@BitBagSyliusElasticsearchPlugin/Shop/Product/Index/_filterForm.html.twig' %}
             </div>
         </div>
-        <div class="twelve wide column">
+        <div class="col-9">
             <div class="ui segment">
-                <div class="ui stackable grid">
-                    <div class="five wide column">
+                <div class="row">
+                    <div class="col-4">
                         {% include '@BitBagSyliusElasticsearchPlugin/Shop/Product/Index/_sorting.html.twig' %}
                         {% include '@BitBagSyliusElasticsearchPlugin/Shop/Product/Index/_pagination.html.twig' %}
                     </div>
-                    <div class="eleven wide column">
+                    <div class="col-8">
                         <div class="ui search" id="products-search">
                             <div class="ui fluid large left icon input">
                                 {{ form_widget(form.name, {'attr': {'placeholder': 'sylius.ui.search', 'class': 'prompt'}}) }}

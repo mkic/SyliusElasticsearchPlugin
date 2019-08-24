@@ -1,14 +1,99 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 <form method="get" class="ui loadable form">
-    <div class="item">
-        {{ form_row(form.options) }}
+    <div class="row">
+        <div class="col-12">
+        {% for option in form.options %}
+            <div class="row">
+                <div class="col-12 attributes-checkbox">
+                    <div class="panel-heading">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#id_{{ option.vars.id }}">
+                            {{ option.vars.label }}
+                        </a>
+                    </div>
+                    <div id="id_{{ option.vars.id }}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            {% for choice in option.children %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input type="checkbox"
+                                                   class="form-check-input"
+                                                   name="{{ option.vars.full_name }}[]"
+                                                   value="{{ choice.vars.value }}"
+                                                   id="{{ choice.vars.id }}" {% if choice.vars.data %}checked="checked"{% endif %}/>
+                                            <label class="form-check-label" for="{{ choice.vars.id }}">
+                                                {{ choice.vars.label }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
     </div>
-    <div class="item">
-        {{ form_row(form.attributes) }}
+    <div class="row">
+        <div class="col-12">
+            {% for attribute in form.attributes %}
+                <div class="row">
+                    <div class="col-12 attributes-checkbox">
+                        <div class="panel-heading">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#id_{{ attribute.vars.id }}">
+                                {{ attribute.vars.label }}
+                            </a>
+                        </div>
+                        <div id="id_{{ attribute.vars.id }}" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                {% for choice in attribute.children %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input"
+                                                       name="{{ attribute.vars.full_name }}[]"
+                                                       value="{{ choice.vars.value }}"
+                                                       id="{{ choice.vars.id }}" {% if choice.vars.data %}checked="checked"{% endif %}/>
+                                                <label class="form-check-label" for="{{ choice.vars.id }}">
+                                                    {{ choice.vars.label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="item">
-        {{ form_row(form.price) }}
+    <div class="row">
+        <div class="col-12">
+            <div class="panel-heading">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" href="#id_prices_filter">
+                    Prices
+                </a>
+            </div>
+            <div id="id_prices_filter" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" class="js-range-slider" name="my_range" value="" id="rangePriceSlider"/>
+                            {% for price in form.price %}
+                                <input type="hidden" name="{{ price.vars.full_name }}" value="{{ price.vars.value }}" id="{{ price.vars.id }}"/>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="item">
         <button type="submit" class="ui primary icon labeled button" style="width: 100%;"><i class="search icon"></i> {{ 'bitbag_sylius_elasticsearch_plugin.ui.filter'|trans }}</button>
     </div>
 </form>
+
