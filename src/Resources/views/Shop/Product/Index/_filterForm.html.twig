@@ -1,7 +1,37 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
-<form method="get" class="ui loadable form">
-    <div class="row">
+<form method="get" class="ui loadable form" id="form-search-list">
+    {{ render(url('sylius_shop_partial_taxon_index_by_code', {'code': 'category', 'template': '@SyliusShop/Custom/_taxons_list.html.twig'})) }}
+    {% if taxon.children|length > 0 %}
+        <div class="row mt-2 mb-1">
+            <div class="col-12">
+                <div class="font-weight-bold lg-text">
+                    More in this category
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% for subChild in taxon.children %}
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="{{ path('bitbag_sylius_elasticsearch_plugin_shop_list_products', {'slug': subChild.slug, '_locale': subChild.translation.locale}) }}">
+                                {{ subChild.name }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="row mt-2 mb-1">
+        <div class="col-12">
+            <div class="font-weight-bold lg-text">
+                Filter By
+            </div>
+        </div>
+    </div>
+    <div class="row filter_form_list">
         <div class="col-12">
         {% for option in form.options %}
             <div class="row">
@@ -18,7 +48,7 @@
                                     <div class="col-12">
                                         <div class="form-check">
                                             <input type="checkbox"
-                                                   class="form-check-input"
+                                                   class="form-check-input filter_input"
                                                    name="{{ option.vars.full_name }}[]"
                                                    value="{{ choice.vars.value }}"
                                                    id="{{ choice.vars.id }}" {% if choice.vars.data %}checked="checked"{% endif %}/>
@@ -36,7 +66,7 @@
         {% endfor %}
         </div>
     </div>
-    <div class="row">
+    <div class="row filter_form_list">
         <div class="col-12">
             {% for attribute in form.attributes %}
                 <div class="row">
@@ -53,7 +83,7 @@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 <input type="checkbox"
-                                                       class="form-check-input"
+                                                       class="form-check-input filter_input"
                                                        name="{{ attribute.vars.full_name }}[]"
                                                        value="{{ choice.vars.value }}"
                                                        id="{{ choice.vars.id }}" {% if choice.vars.data %}checked="checked"{% endif %}/>
@@ -71,7 +101,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row">
+    <div class="row filter_form_list">
         <div class="col-12">
             <div class="panel-heading">
                 <a class="accordion-toggle collapsed" data-toggle="collapse" href="#id_prices_filter">
@@ -84,16 +114,13 @@
                         <div class="col-12">
                             <input type="text" class="js-range-slider" name="my_range" value="" id="rangePriceSlider"/>
                             {% for price in form.price %}
-                                <input type="hidden" name="{{ price.vars.full_name }}" value="{{ price.vars.value }}" id="{{ price.vars.id }}"/>
+                                <input class="filter_input" type="hidden" name="{{ price.vars.full_name }}" value="{{ price.vars.value }}" id="{{ price.vars.id }}"/>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="item">
-        <button type="submit" class="ui primary icon labeled button" style="width: 100%;"><i class="search icon"></i> {{ 'bitbag_sylius_elasticsearch_plugin.ui.filter'|trans }}</button>
     </div>
 </form>
 
